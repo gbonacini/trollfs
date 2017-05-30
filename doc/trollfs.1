@@ -1,0 +1,35 @@
+.TH TROLLFS 1 "MAY 2017" Linux "User Manuals"                                  
+.SH NAME                                                                     
+trollfs \- A hi-tech prank. :-)
+.SH SYNOPSIS                                                                 
+.B  trollfs [-d mountpoint] [-f payload_repository] [-m magic_db] [-D] 
+         [-h] 
+.SH DESCRIPTION                                                              
+.B trollfs                                                                       
+permits to create and "overmount" a fake in-memory file system (using FUSE) that reproduce almost exactly the structure of the sub-tree present in the mount point, but, for each read request returns fake data instead of the real content, The payload is freely configurable creating o modifying the files present in the payloads' directory. A file created in that directory, with an extension related to one or more real files present in the original directory, will be used as fake data. 
+.SH OPTIONS                                                       
+.IP -d mountpoint
+Specifies the directory to "overmount": new access to that directory will be hijacked by trollfs. To umount the troll fs, use the command: fusermount -u <mountpoint>
+.IP -f payload_repository
+Specifies an alternative payload' directory. The default is: ./trollrepos .
+.IP -m magic_db
+Specifies an alternative libmagic database. Libmagic is used to check that content of a file with a higher priority on the extension, if present.  The default is: /usr/share/file/magic.mgc .
+.IP -D                                                                       
+Debug mode. A file with name .trollfs_debug.log will be created with debug information.
+.IP -h
+A short description of trollfs command line syntax.
+.SH FILES                                                                    
+.IP /usr/share/file/magic.mgc
+Default libmagic db.
+.IP ./trollrepos
+Default payloads' repository.
+.IP .trollfs_debug.log
+Debug log file, if -D was specified.
+.SH BUGS                                                                     
+This program is an alpha. Please report any bugs.
+.SH DEPENDENCIES
+libfuse (FUSE), libmagic (file recognition).                                                                   
+.SH AUTHOR                                                                   
+Gabriele Bonacini <gabriele.bonacini@protonmail.com>
+.SH "SEE ALSO"                                                               
+.BR SSH(1)
