@@ -31,7 +31,7 @@ AC_HEADER_STDC
 AC_C_CONST
 AC_TYPE_SIZE_T
 
-# Libs list autmatically generated prom dependecy script
+# Libs list autmatically generated from dependecy script
 AC_CHECK_LIB([fuse],[fuse_main],[],[AC_MSG_FAILURE([could not find lib FUSE])])
 AC_CHECK_LIB([magic],[magic_file],[],[AC_MSG_FAILURE([could not find lib magic])])
 
@@ -49,12 +49,12 @@ AS_CASE(["$host_os"],
 	            [gcc], 
                      [ CXXFLAGS=" -std=c++11 -g -Wall -Wextra \
                              -D_FORTIFY_SOURCE=2 ${OPTIMIZATION} -fstack-protector \
-                             --param=ssp-buffer-size=4 -Wformat -Werror=format-security ${INC_SSL_CUSTOM}"
+                             --param=ssp-buffer-size=4 -Wformat -Werror=format-security "
                         LDFLAGS="$LDFLAGS ${LIB_SSL_CUSTOM}-Wl,-z,relro"
 		    ],
 		    [
                          CXXFLAGS=" -std=c++11 -O2 -g -Wall "
-                         LDFLAGS="$LDFLAGS ${LIB_SSL_CUSTOM}"
+                         LDFLAGS="$LDFLAGS "
 		    ])
         ],
 	[
