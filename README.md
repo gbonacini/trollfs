@@ -20,6 +20,7 @@ Prerequisites:
 Tested on:
 
 - Ubuntu 16.10
+- Debian 7.11 (Wheezy)
 
 Installation:
 =============
