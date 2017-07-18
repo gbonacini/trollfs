@@ -7,8 +7,8 @@ using std::endl;
     
 namespace checkMagic{
 
-    const std::string MIME_DB("/usr/share/file/magic.mgc");  
-    const std::string DEFAULT_EXT("default"); 
+    const string MIME_DB("/usr/share/file/magic.mgc");  
+    const string DEFAULT_EXT("default"); 
 
     MagicFile::MagicFile() : mimeDb(MIME_DB){
          initDictionary();
@@ -19,11 +19,11 @@ namespace checkMagic{
 	 return mf;
     }
 
-    void MagicFile::setMagicDb(std::string mdb) noexcept(true){
+    void MagicFile::setMagicDb(string mdb) noexcept(true){
          mimeDb    =   mdb;
     }
 
-    const std::string& MagicFile::getDefaultExt(void) noexcept(true){
+    const string& MagicFile::getDefaultExt(void) noexcept(true){
          return  DEFAULT_EXT;
     }
 

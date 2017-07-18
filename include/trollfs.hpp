@@ -89,6 +89,7 @@ namespace trollfs{
              static int  getattrCb(           const char          *path,
                                               Stat                *stbuf)             noexcept(true);
                
+                    static std::fstream            debugStream;
          private:
                          Trollfs(         const std::string& dir, 
                                           const std::string& mdb,
@@ -99,7 +100,6 @@ namespace trollfs{
                     static checkMagic::MagicFile&  mf;
                     static Filesystem              fs;
                     static bool                    trace;
-                    static std::fstream            debugStream;
                            std::string             reposPath,
                                                    dirPath;
                     static std::string             magicDb;

@@ -8,17 +8,20 @@ using std::vector;
 using std::map;
 using std::move;
 using std::copy;
+using std::exception;
 using std::exception_ptr;
 using std::current_exception;
 using std::numeric_limits;
+using std::rethrow_exception;
+
 using checkMagic::MagicFile;
 
 namespace trollfs{
-    const std::string DEFAULT_REPO                   = "./trollrepos"; 
-    const std::string DEFAULT_EMPTY_CONT             = "empty"; 
-    const std::string DEFAULT_DEBUG_FILE             = ".trollfs_debug.log"; 
-    const std::string ROOT_DIR                       = "/"; 
-    const std::string PATH_SEPARATOR                 = "/"; 
+    const string DEFAULT_REPO                   = "./trollrepos"; 
+    const string DEFAULT_EMPTY_CONT             = "empty"; 
+    const string DEFAULT_DEBUG_FILE             = ".trollfs_debug.log"; 
+    const string ROOT_DIR                       = "/"; 
+    const string PATH_SEPARATOR                 = "/"; 
 
     enum  STDCONST { STRBUFF_LEN=1024 };
 
@@ -31,11 +34,11 @@ namespace trollfs{
     string                    Trollfs::magicDb;
     size_t                    Trollfs::mountPoint;
 
-    void genericExcPtrHdlr(std::exception_ptr exptr){
+    void genericExcPtrHdlr(exception_ptr exptr){
            try {
-              if(exptr) std::rethrow_exception(exptr);
-           }catch(const std::exception& e) {
-             std::cerr << "Caught unexpected exception \"" << e.what() << "\"\n";
+              if(exptr) rethrow_exception(exptr);
+           }catch(const exception& e) {
+		   Trollfs::debugStream << "Caught unexpected exception \"" << e.what() << "\"\n";
            }
     }
 
@@ -64,7 +67,7 @@ namespace trollfs{
              if(Trollfs::trace) Trollfs::debugStream << "getattrCb - <Found dir>\n";
              auto isFile = isDir->second.find(fileName);
              if(isFile != isDir->second.end()){
-		      auto stats      = get<FILESTAT>(isFile->second);
+		      auto &stats     = get<FILESTAT>(isFile->second);
 		      stbuf->st_uid   = stats.st_uid;
 		      stbuf->st_gid   = stats.st_gid;
                       stbuf->st_nlink = stats.st_nlink;
@@ -202,7 +205,7 @@ namespace trollfs{
                       return len - offset;
                     }
             
-		    copy(get<FILECONT>(file->second)->data() + offset, get<FILECONT>(file->second)->data() + len, buf);
+		    copy(get<FILECONT>(file->second)->data() + offset, get<FILECONT>(file->second)->data() + offset + size, buf);
 
                     return size;
                   }
@@ -216,13 +219,13 @@ namespace trollfs{
       return -ENOENT;
     }
 
-    Trollfs& Trollfs::getInstance(const std::string& pdir, const std::string& pmdb, const std::string& prepo) noexcept(true){
+    Trollfs& Trollfs::getInstance(const string& pdir, const string& pmdb, const string& prepo) noexcept(true){
 	  static Trollfs singleTroll(pdir, pmdb, prepo);
 
           return singleTroll;
     }
     
-    Trollfs::Trollfs(const string& dir, const std::string& mdb, const std::string& repoPath) : dirPath(dir){
+    Trollfs::Trollfs(const string& dir, const string& mdb, const string& repoPath) : dirPath(dir){
          fuse = {};
          fuse.getattr = Trollfs::getattrCb;
          fuse.open    = Trollfs::openCb;
